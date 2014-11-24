@@ -1,0 +1,20 @@
+{
+  "name": "insert-remapper",
+  "version": "0.0.1",
+  "description": "insert-remapper",
+  "main": "app.js",
+  "author": "Steve",
+  "devDependencies": {
+    "connect": "^3.3.3",
+    "js-base64": "^2.1.5",
+    "serve-static": "^1.7.1",
+    "source-map": "^0.1.40"
+  },
+  "dependencies": {
+    "source-map": "^0.1.40"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "license": "MIT"
+}
