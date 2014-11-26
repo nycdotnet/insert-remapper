@@ -18,6 +18,7 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="gruntfile.js" />
     <Content Include="index.html" />
     <Content Include="web.config" />
   </ItemGroup>

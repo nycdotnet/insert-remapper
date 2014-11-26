@@ -8,6 +8,7 @@
 
 *.js
 *.js.map
+!gruntfile.js
 
 # Build results
 [Dd]ebug/
