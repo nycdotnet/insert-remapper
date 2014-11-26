@@ -23,7 +23,9 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="index-tests.ts" />
     <TypeScriptCompile Include="index.ts" />
+    <TypeScriptCompile Include="tests.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="package.json" />
@@ -55,10 +57,12 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
-    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>False</TypeScriptSourceMap>
     <TypeScriptModuleKind>commonjs</TypeScriptModuleKind>
     <TypeScriptNoImplicitAny>True</TypeScriptNoImplicitAny>
+    <TypeScriptCompileOnSaveEnabled>False</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>

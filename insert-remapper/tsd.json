@@ -10,6 +10,9 @@
     },
     "source-map/source-map.d.ts": {
       "commit": "266324c29cd7f8114cc7fe917a62986b5f00bc8f"
+    },
+    "qunit/qunit.d.ts": {
+      "commit": "266324c29cd7f8114cc7fe917a62986b5f00bc8f"
     }
   }
 }
