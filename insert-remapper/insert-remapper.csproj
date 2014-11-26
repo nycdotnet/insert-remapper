@@ -20,10 +20,12 @@
   <ItemGroup>
     <Content Include="gruntfile.js" />
     <Content Include="index.html" />
+    <Content Include="tests\index.html" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="index.ts" />
+    <TypeScriptCompile Include="tests\index-tests.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="package.json" />

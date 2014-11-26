@@ -1,17 +1,9 @@
 ﻿///<reference path="typings/tsd.d.ts" />
-/*
- What we need to do:
- Open the generated JS file and JS Map.
- if no JS Map was specified, find it by reading the JS file backward from the end and look for startsWith //# sourceMappingURL=
- Read through the map, identifying the corresponding location from the original source file - cache all of this.
- Then output the new JS file and set up a new map, re-using all of the cached mapping info except this time with extra
-  lines added.
-*/
 
 import fs = require('fs');
 import SourceMap = require('source-map');
 
-class insertRemapper {
+class InsertRemapper {
     private generatedJSFileContents : string[];
     private rawSourceMap: any;
     private generatedJSFileMappings : SourceMap.MappingItem[];
@@ -135,4 +127,4 @@ class insertRemapper {
     }
 }
 
-export = insertRemapper;
+export = InsertRemapper;

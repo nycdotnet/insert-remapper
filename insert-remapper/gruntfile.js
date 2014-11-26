@@ -11,12 +11,32 @@
                 compiler: './node_modules/grunt-ts/customcompiler/tsc'
             },
             dev: {
-                src: ["*.ts"]
+                src: ["*.ts","tests/**/*.ts"]
             }
         },
+        qunit: {
+            all: {
+                options: {
+                    urls: [
+                      'http://localhost:8000/tests/index.html'
+                    ]
+                }
+            }
+        },
+        connect: {
+            server: {
+                options: {
+                    port: 8000,
+                    base: '.',
+                    hostname: '*'
+                }
+            }
+        }
     });
 
     grunt.loadNpmTasks("grunt-ts");
-    grunt.registerTask("default", ["ts:dev"]);
+    grunt.loadNpmTasks('grunt-contrib-qunit');
+    grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.registerTask("default", ["ts:dev", "connect", "qunit"]);
 };
 
