@@ -11,7 +11,7 @@
                 compiler: './node_modules/grunt-ts/customcompiler/tsc'
             },
             dev: {
-                src: ["*.ts"]
+                src: ["*.ts", "./tests/**/*.ts"]
             }
         },
     });

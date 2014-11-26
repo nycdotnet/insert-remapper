@@ -24,6 +24,8 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="index.ts" />
+    <TypeScriptCompile Include="tests\index.tests.ts" />
+    <TypeScriptCompile Include="tests\tsUnit.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="package.json" />
