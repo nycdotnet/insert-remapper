@@ -23,6 +23,7 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="doNotImport.ts" />
     <TypeScriptCompile Include="index-tests.ts" />
     <TypeScriptCompile Include="index.ts" />
     <TypeScriptCompile Include="tests.ts" />
