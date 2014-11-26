@@ -4,7 +4,7 @@
   "description": "Allows inserting arbitrary lines to a generated JS file with a map.",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "node tests.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/nycdotnet/insert-remapper/issues"
   },
-  "homepage": "https://github.com/nycdotnet/insert-remapper"
+  "homepage": "https://github.com/nycdotnet/insert-remapper",
+  "dependencies": {
+    "source-map": "^0.1.40"
+  },
+  "devDependencies": {}
 }
