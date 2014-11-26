@@ -6,6 +6,9 @@
 *.user
 *.sln.docstates
 
+*.js
+*.js.map
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

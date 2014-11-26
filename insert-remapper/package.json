@@ -1,20 +1,19 @@
 {
   "name": "insert-remapper",
-  "version": "0.0.1",
-  "description": "insert-remapper",
-  "main": "app.js",
-  "author": "Steve",
-  "devDependencies": {
-    "connect": "^3.3.3",
-    "js-base64": "^2.1.5",
-    "serve-static": "^1.7.1",
-    "source-map": "^0.1.40"
-  },
-  "dependencies": {
-    "source-map": "^0.1.40"
-  },
+  "version": "0.1.0",
+  "description": "Allows inserting arbitrary lines to a generated JS file with a map.",
+  "main": "index.js",
   "scripts": {
     "test": "test"
   },
-  "license": "MIT"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nycdotnet/insert-remapper.git"
+  },
+  "author": "Steve Ognibene @nycdotnet",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nycdotnet/insert-remapper/issues"
+  },
+  "homepage": "https://github.com/nycdotnet/insert-remapper"
 }
