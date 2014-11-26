@@ -2,10 +2,15 @@
 
 import InsertRemapper = require('../index'); //ts:doNotImport
 
-QUnit.test("hello test", function (assert) {
+module IndexTests {
 
-    var ir = new InsertRemapper("", "", "", "");
+    QUnit.test("hello test", function (assert) {
 
-    assert.ok(!!ir, "object exists");
-});
+        var ir = new InsertRemapper("", "", "", "");
 
+        assert.ok(!!ir, "object exists");
+    });
+
+}
+
+export = IndexTests;

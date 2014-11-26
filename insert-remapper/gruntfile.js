@@ -15,7 +15,7 @@
             }
         },
         qunit: {
-            all: {
+            dev: {
                 options: {
                     urls: [
                       'http://localhost:8000/tests/index.html'
@@ -24,11 +24,19 @@
             }
         },
         connect: {
-            server: {
+            dev: {
                 options: {
                     port: 8000,
                     base: '.',
                     hostname: '*'
+                }
+            }
+        },
+        browserify: {
+            dev: {
+                files : {
+                    'dist/index.js' : 'index.js',
+                    'dist/tests/index-tests.js': 'tests/index-tests.js'
                 }
             }
         }
@@ -37,6 +45,7 @@
     grunt.loadNpmTasks("grunt-ts");
     grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-connect');
-    grunt.registerTask("default", ["ts:dev", "connect", "qunit"]);
+    grunt.loadNpmTasks('grunt-browserify');
+    grunt.registerTask("default", ["ts", "browserify", "connect", "qunit"]);
 };
 
