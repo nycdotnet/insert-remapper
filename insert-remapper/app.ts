@@ -36,9 +36,6 @@ interface SourceMapGenerator_SourceMapping {
     original: SourceMapPosition;
 }
 
-
-
-
 class insertRemapper {
     private fs = require('fs');
     private SourceMap = require('source-map');
@@ -190,81 +187,3 @@ var ir = new insertRemapper(generatedJSFileName, generatedJSFileName + '.map', '
 ir.insert("//test1\n//test2",12);
 
 ir.save(modifiedJSFileName,modifiedJSFileName + '.map','Banner10Modified.js', 'Banner10Modified.js.map');
-
-
-
-
-
-//var Base64 = require('js-base64').Base64;
-//
-
-
-
-
-
-
-//var smc = new SourceMap.SourceMapConsumer(rawSourceMap);
-
-//console.log(smc.sources.join("\n"));
-
-////console.log(rawMap.mappings);
-
-//var mappedLines = (<string>rawSourceMap.mappings).split(';');
-
-//console.log(mappedLines.length);
-
-//console.log(mappedLines.join("\n"));
-
-
-//var dan = Base64.encode('dankogai');  // ZGFua29nYWk=
-//var map = Base64.decode("AAAA");
-//console.log(map);
-
-
-
-////Originally from http://vabate.com/convert-a-base64-encoded-string-to-binary-with-javascript/
-//// Now with significant modifications.
-//function binEncode(data) {
-
-//    //array holds the initial set of un-padded binary results
-//    var binArray = [];
-
-//    //the string to hold the padded results
-//    var datEncode = "";
-
-//    //encode each character in data to it's binary equiv and push it into an array
-//    for (var i = 0; i < data.length; i++) {
-//        binArray.push(data[i].charCodeAt(0).toString(2));
-
-//    }
-
-//    //loop through binArray to pad each binary entry.
-//    for (var j = 0; j < binArray.length; j++) {
-//        //pad the binary result with zeros to the left to ensure proper 8 bit binary
-//        var pad = padding_left(binArray[j], '0', 8);
-
-//        //append each result into a string
-//        datEncode += pad + ' ';
-
-//    }
-//}
-
-//function padding_left(s, c, n) {
-//    if (!s || !c || s.length >= n) {
-//        return s;
-//    }
-
-//    var max = (n - s.length) / c.length;
-//    for (var i = 0; i < max; i++) {
-//        s = c + s;
-//    }
-
-//    return s;
-//}
-
-//var myString = "VGhhbmtzIEZvciBSZWFkaW5nIQ==";
-//console.log("myString:");
-//console.log(myString);
-//console.log("As Binary:");
-//console.log(binEncode(myString));
-
