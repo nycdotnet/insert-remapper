@@ -1,58 +1,27 @@
-﻿/*
+﻿///<reference path="typings/tsd.d.ts" />
+/*
  What we need to do:
  Open the generated JS file and JS Map.
  if no JS Map was specified, find it by reading the JS file backward from the end and look for startsWith //# sourceMappingURL=
  Read through the map, identifying the corresponding location from the original source file - cache all of this.
  Then output the new JS file and set up a new map, re-using all of the cached mapping info except this time with extra
   lines added.
-
 */
 
-interface SourceMapPosition {
-    line: number;
-    column: number;
-}
-
-interface SourceMapInfo extends SourceMapPosition {
-    /** The original source file, or null if this information is not available. */
-    source: string;
-    /** The original identifier, or null if this information is not available. */
-    name: string;
-}
-
-interface SourceMapConsumer_SourceMapping {
-    source: string;
-    name: string;
-    generatedLine: number;
-    generatedColumn: number;
-    originalLine: number;
-    originalColumn: number;
-}
-
-interface SourceMapGenerator_SourceMapping {
-    source: string;
-    name: string;
-    generated: SourceMapPosition;
-    original: SourceMapPosition;
-}
+import fs = require('fs');
+import SourceMap = require('source-map');
 
 class insertRemapper {
-    private fs = require('fs');
-    private SourceMap = require('source-map');
     private generatedJSFileContents : string[];
     private rawSourceMap: any;
-    private generatedJSFileMappings : SourceMapConsumer_SourceMapping[];
-    public static verboseLoggingToConsole = false;
+    private generatedJSFileMappings : SourceMap.MappingItem[];
 
     constructor(public generatedJSFileName: string,
             public generatedJSMapFileName: string,
             public lineEnding = '\n',
             public encoding = 'utf8') {
-        this.generatedJSFileContents = this.fs.readFileSync(generatedJSFileName, this.encoding).split(this.lineEnding);
-        this.rawSourceMap = JSON.parse(this.fs.readFileSync(generatedJSMapFileName, this.encoding));
-        if (insertRemapper.verboseLoggingToConsole) {
-            console.log(JSON.stringify(this.rawSourceMap));
-        }
+        this.generatedJSFileContents = fs.readFileSync(generatedJSFileName, this.encoding).split(this.lineEnding);
+        this.rawSourceMap = JSON.parse(fs.readFileSync(generatedJSMapFileName, this.encoding));
         this.consumeSourceMap();
     }
 
@@ -61,14 +30,11 @@ class insertRemapper {
     }
 
     private consumeSourceMap() {
-        var smc = new this.SourceMap.SourceMapConsumer(this.rawSourceMap);
+        var smc : SourceMap.SourceMapConsumer = new SourceMap.SourceMapConsumer(this.rawSourceMap);
         this.generatedJSFileMappings = [];
-        smc.eachMapping((mapping: SourceMapConsumer_SourceMapping) => {
+        smc.eachMapping((mapping: SourceMap.MappingItem) => {
             this.generatedJSFileMappings.push(mapping);
-        }, this, smc.GENERATED_ORDER);
-        if (insertRemapper.verboseLoggingToConsole) {
-            this.consoleLogMappings();
-        }
+        }, this, SourceMap.SourceMapConsumer.GENERATED_ORDER);
     }
 
     private sourceMappingUrlArrayIndex() {
@@ -101,9 +67,9 @@ class insertRemapper {
             }
         }
 
-        this.fs.writeFile(outputJSFileNameAndPath, this.generatedJSFileContents.join(this.lineEnding), {encoding:this.encoding});
+        fs.writeFile(outputJSFileNameAndPath, this.generatedJSFileContents.join(this.lineEnding), {encoding:this.encoding});
         
-        var smg = new this.SourceMap.SourceMapGenerator({file: referencedJSFileNameAndPath, sourceRoot: this.rawSourceMap.sourceRoot});
+        var smg : SourceMap.SourceMapGenerator = new SourceMap.SourceMapGenerator({file: referencedJSFileNameAndPath, sourceRoot: this.rawSourceMap.sourceRoot});
 
         for (var i = 0; i < this.generatedJSFileMappings.length; i+=1) {
             var mapping = this.generatedJSFileMappings[i];
@@ -113,7 +79,7 @@ class insertRemapper {
                 name: mapping.name});
         }
 
-        this.fs.writeFile(outputJSMapFileNameAndPath,
+        fs.writeFile(outputJSMapFileNameAndPath,
                 smg.toString(),
                 {encoding:"utf8" /* this encoding is required by the spec */ });
     }
@@ -123,10 +89,6 @@ class insertRemapper {
         this.generatedJSFileContents = this.insertArrayAt(
             this.generatedJSFileContents,oneBasedGeneratedLineNumber -1, linesToInsert);
         
-        if (insertRemapper.verboseLoggingToConsole) {
-            this.consoleLogGeneratedFile();
-        }
-        
         var insertedLineCount = linesToInsert.length;
         var fileMappingsCount = this.generatedJSFileMappings.length
 
@@ -134,10 +96,6 @@ class insertRemapper {
             if (this.generatedJSFileMappings[i].generatedLine >= oneBasedGeneratedLineNumber) {
                 this.generatedJSFileMappings[i].generatedLine += (insertedLineCount + 1);
             }
-        }
-
-        if (insertRemapper.verboseLoggingToConsole) {
-            this.consoleLogMappings();
         }
     }
 
@@ -177,13 +135,4 @@ class insertRemapper {
     }
 }
 
-
-var generatedJSFileName = './Artifacts/Banner10.js';
-var modifiedJSFileName = './Artifacts/Banner10modified.js';
-
-insertRemapper.verboseLoggingToConsole = true;
-var ir = new insertRemapper(generatedJSFileName, generatedJSFileName + '.map', '\r\n', 'utf8');
-
-ir.insert("//test1\n//test2",12);
-
-ir.save(modifiedJSFileName,modifiedJSFileName + '.map','Banner10Modified.js', 'Banner10Modified.js.map');
+export = insertRemapper;
