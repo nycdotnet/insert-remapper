@@ -6,14 +6,25 @@ import SourceMap = require('source-map');
 class InsertRemapper {
     private generatedJSFileContents : string[];
     private rawSourceMap: any;
-    private generatedJSFileMappings : SourceMap.MappingItem[];
+    private generatedJSFileMappings: SourceMap.MappingItem[];
+    private external = InsertRemapper.externalAPI;
+
+    public static externalAPI = {
+        readFileSync: (inputFileName: string, encoding: string) => {
+            return fs.readFileSync(inputFileName, encoding);
+        },
+        writeFileSync: (outputFileName: string, data: string,  encoding: string) => {
+            fs.writeFileSync(outputFileName, data, { encoding: encoding });
+        },
+        writeResults: <any>[] 
+    };
 
     constructor(public generatedJSFileName: string,
             public generatedJSMapFileName: string,
             public lineEnding = '\n',
             public encoding = 'utf8') {
-        this.generatedJSFileContents = fs.readFileSync(generatedJSFileName, this.encoding).split(this.lineEnding);
-        this.rawSourceMap = JSON.parse(fs.readFileSync(generatedJSMapFileName, this.encoding));
+        this.generatedJSFileContents = this.external.readFileSync(generatedJSFileName, this.encoding).split(this.lineEnding);
+        this.rawSourceMap = JSON.parse(this.external.readFileSync(generatedJSMapFileName, this.encoding));
         this.consumeSourceMap();
     }
 
@@ -59,7 +70,7 @@ class InsertRemapper {
             }
         }
 
-        fs.writeFile(outputJSFileNameAndPath, this.generatedJSFileContents.join(this.lineEnding), {encoding:this.encoding});
+        this.external.writeFileSync(outputJSFileNameAndPath, this.generatedJSFileContents.join(this.lineEnding), this.encoding);
         
         var smg : SourceMap.SourceMapGenerator = new SourceMap.SourceMapGenerator({file: referencedJSFileNameAndPath, sourceRoot: this.rawSourceMap.sourceRoot});
 
@@ -71,9 +82,9 @@ class InsertRemapper {
                 name: mapping.name});
         }
 
-        fs.writeFile(outputJSMapFileNameAndPath,
+        this.external.writeFileSync(outputJSMapFileNameAndPath,
                 smg.toString(),
-                {encoding:"utf8" /* this encoding is required by the spec */ });
+                "utf8" /* UTF-8 is required by the spec */);
     }
 
     public insert(codeToInsert: string, oneBasedGeneratedLineNumber: number) {
