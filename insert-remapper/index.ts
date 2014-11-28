@@ -3,28 +3,31 @@
 import fs = require('fs');
 import SourceMap = require('source-map');
 
+interface InsertRemapperOptions {
+    lineEnding: string;
+    encoding: string;
+    fs?: typeof fs;
+    SourceMap?: typeof SourceMap;
+}
+
 class InsertRemapper {
     private generatedJSFileContents : string[];
     private rawSourceMap: any;
     private generatedJSFileMappings: SourceMap.MappingItem[];
-    private external = InsertRemapper.externalAPI;
-
-    public static externalAPI = {
-        readFileSync: (inputFileName: string, encoding: string) => {
-            return fs.readFileSync(inputFileName, encoding);
-        },
-        writeFileSync: (outputFileName: string, data: string,  encoding: string) => {
-            fs.writeFileSync(outputFileName, data, { encoding: encoding });
-        },
-        writeResults: <any>[] 
-    };
+    public lineEnding: string;
+    public encoding: string;
+    public fs: typeof fs;
+    public SourceMap: typeof SourceMap;
 
     constructor(public generatedJSFileName: string,
             public generatedJSMapFileName: string,
-            public lineEnding = '\n',
-            public encoding = 'utf8') {
-        this.generatedJSFileContents = this.external.readFileSync(generatedJSFileName, this.encoding).split(this.lineEnding);
-        this.rawSourceMap = JSON.parse(this.external.readFileSync(generatedJSMapFileName, this.encoding));
+        options: InsertRemapperOptions) {
+
+        this.fs = options.fs ? options.fs : fs;
+        this.SourceMap = options.SourceMap ? options.SourceMap : SourceMap;
+
+        this.generatedJSFileContents = this.fs.readFileSync(generatedJSFileName, this.encoding).split(this.lineEnding);
+        this.rawSourceMap = JSON.parse(this.fs.readFileSync(generatedJSMapFileName, this.encoding));
         this.consumeSourceMap();
     }
 
@@ -70,7 +73,7 @@ class InsertRemapper {
             }
         }
 
-        this.external.writeFileSync(outputJSFileNameAndPath, this.generatedJSFileContents.join(this.lineEnding), this.encoding);
+        this.fs.writeFileSync(outputJSFileNameAndPath, this.generatedJSFileContents.join(this.lineEnding), this.encoding);
         
         var smg : SourceMap.SourceMapGenerator = new SourceMap.SourceMapGenerator({file: referencedJSFileNameAndPath, sourceRoot: this.rawSourceMap.sourceRoot});
 
@@ -82,7 +85,7 @@ class InsertRemapper {
                 name: mapping.name});
         }
 
-        this.external.writeFileSync(outputJSMapFileNameAndPath,
+        this.fs.writeFileSync(outputJSMapFileNameAndPath,
                 smg.toString(),
                 "utf8" /* UTF-8 is required by the spec */);
     }
