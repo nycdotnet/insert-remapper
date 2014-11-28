@@ -11,8 +11,8 @@
     "source-map/source-map.d.ts": {
       "commit": "266324c29cd7f8114cc7fe917a62986b5f00bc8f"
     },
-    "qunit/qunit.d.ts": {
-      "commit": "bd2377d9f89860c796bb678f05f3c1326ba8c842"
+    "nodeunit/nodeunit.d.ts": {
+      "commit": "974747ee99bbd087bac5e5647405101139519963"
     }
   }
 }

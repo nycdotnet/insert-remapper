@@ -4,8 +4,8 @@ import fs = require('fs');
 import SourceMap = require('source-map');
 
 interface InsertRemapperOptions {
-    lineEnding: string;
-    encoding: string;
+    lineEnding?: string;
+    encoding?: string;
     fs?: typeof fs;
     SourceMap?: typeof SourceMap;
 }
@@ -25,10 +25,14 @@ class InsertRemapper {
 
         this.fs = options.fs ? options.fs : fs;
         this.SourceMap = options.SourceMap ? options.SourceMap : SourceMap;
+        this.lineEnding = options.lineEnding ? options.lineEnding : '\n';
+        this.encoding = options.encoding ? options.encoding : 'utf8';
 
-        this.generatedJSFileContents = this.fs.readFileSync(generatedJSFileName, this.encoding).split(this.lineEnding);
-        this.rawSourceMap = JSON.parse(this.fs.readFileSync(generatedJSMapFileName, this.encoding));
-        this.consumeSourceMap();
+        if (generatedJSFileName !== "") {
+            this.generatedJSFileContents = this.fs.readFileSync(generatedJSFileName, this.encoding).split(this.lineEnding);
+            this.rawSourceMap = JSON.parse(this.fs.readFileSync(generatedJSMapFileName, this.encoding));
+            this.consumeSourceMap();
+        }
     }
 
     private generatedJSFileLineCount() {
@@ -41,6 +45,8 @@ class InsertRemapper {
         smc.eachMapping((mapping: SourceMap.MappingItem) => {
             this.generatedJSFileMappings.push(mapping);
         }, this, SourceMap.SourceMapConsumer.GENERATED_ORDER);
+
+        this.consoleLogMappings();
     }
 
     private sourceMappingUrlArrayIndex() {
