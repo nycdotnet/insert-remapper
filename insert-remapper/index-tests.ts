@@ -1,8 +1,9 @@
 ﻿///<reference path="typings/tsd.d.ts" />
+///<reference path="index.d.ts" />
 
 QUnit.module("index-tests");
 
-import InsertRemapper = require("index"); ///ts:doNotImport 
+declare var InsertRemapper: InsertRemapper;
 
 test("Can create the InsertRemapper", 1, function () {
     var remapper = new InsertRemapper("", "", "", "");

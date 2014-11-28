@@ -9,7 +9,8 @@
                 noImplicitAny: true,
                 fast: "never",
                 compiler: './node_modules/grunt-ts/customcompiler/tsc',
-                comments: true
+                comments: true,
+                declaration: true
             },
             default: {
                 src: ["*.ts"]
@@ -27,6 +28,6 @@
 
     grunt.loadNpmTasks("grunt-ts");
     grunt.loadNpmTasks('grunt-execute');
-    grunt.registerTask("default", ["ts", "execute"]);
+    grunt.registerTask("default", ["ts"]);
 };
 
