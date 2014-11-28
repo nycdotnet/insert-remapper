@@ -18,21 +18,23 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Artifacts\Banner1.js" />
     <Content Include="gruntfile.js" />
-    <Content Include="index.html" />
-    <Content Include="tests\index.html" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Artifacts\Banner1.ts" />
     <TypeScriptCompile Include="index.ts" />
     <TypeScriptCompile Include="tests\index-nodeunit-tests.ts" />
-    <TypeScriptCompile Include="tests\index-tests.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="package.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="tsd.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Artifacts\Banner1.js.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>

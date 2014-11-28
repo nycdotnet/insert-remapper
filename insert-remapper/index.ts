@@ -19,14 +19,17 @@ class InsertRemapper {
     public fs: typeof fs;
     public SourceMap: typeof SourceMap;
 
+    public static defaultLineEnding = '\n';
+    public static defaultEncoding = 'utf8';
+
     constructor(public generatedJSFileName: string,
             public generatedJSMapFileName: string,
         options: InsertRemapperOptions) {
 
         this.fs = options.fs ? options.fs : fs;
         this.SourceMap = options.SourceMap ? options.SourceMap : SourceMap;
-        this.lineEnding = options.lineEnding ? options.lineEnding : '\n';
-        this.encoding = options.encoding ? options.encoding : 'utf8';
+        this.lineEnding = options.lineEnding ? options.lineEnding : InsertRemapper.defaultLineEnding;
+        this.encoding = options.encoding ? options.encoding : InsertRemapper.defaultEncoding;
 
         if (generatedJSFileName !== "") {
             this.generatedJSFileContents = this.fs.readFileSync(generatedJSFileName, this.encoding).split(this.lineEnding);
@@ -45,8 +48,6 @@ class InsertRemapper {
         smc.eachMapping((mapping: SourceMap.MappingItem) => {
             this.generatedJSFileMappings.push(mapping);
         }, this, SourceMap.SourceMapConsumer.GENERATED_ORDER);
-
-        this.consoleLogMappings();
     }
 
     private sourceMappingUrlArrayIndex() {
