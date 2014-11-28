@@ -3,7 +3,7 @@
 
 QUnit.module("index-tests");
 
-declare var InsertRemapper: InsertRemapper;
+declare var InsertRemapper: insertRemapper;
 
 test("Can create the InsertRemapper", 1, function () {
     var remapper = new InsertRemapper("", "", "", "");
