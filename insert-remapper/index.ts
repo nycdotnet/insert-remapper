@@ -104,10 +104,10 @@ class InsertRemapper {
         
         var insertedLineCount = linesToInsert.length;
         var fileMappingsCount = this.generatedJSFileMappings.length
-
+        
         for (var i = 0; i < fileMappingsCount; i += 1) {
             if (this.generatedJSFileMappings[i].generatedLine >= oneBasedGeneratedLineNumber) {
-                this.generatedJSFileMappings[i].generatedLine += (insertedLineCount + 1);
+                this.generatedJSFileMappings[i].generatedLine += (insertedLineCount);
             }
         }
     }
@@ -130,7 +130,13 @@ class InsertRemapper {
     }
 
     public append(codeToinsert: string) {
-        this.insert(codeToinsert, this.generatedJSFileLineCount() + 1);
+        var lastLineNumber = this.generatedJSFileLineCount();
+        if (this.generatedJSFileContents[lastLineNumber-1] === "") {
+            //preserve trailing blank line.
+            this.insert(codeToinsert, lastLineNumber);
+        } else {
+            this.insert(codeToinsert, lastLineNumber + 1);
+        }
     }
 
     private toStringArrayOnNewline(theString: string) {
