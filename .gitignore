@@ -10,6 +10,8 @@
 *.js.map
 !gruntfile.js
 
+.idea/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

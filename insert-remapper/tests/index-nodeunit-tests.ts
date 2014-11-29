@@ -133,11 +133,53 @@ module IndexTests {
             "AAAA,UAAU;AACV,IAAI,CAAC,GAAG,CAAC;;AAET,CAAC,GAAG,CAAC,GAAG,CAAC;;AAET,OAAO,CAAC,GAAG,CAAC,MAAM,GAAG,CAAC,CAAC;;;AAEvB,OAAO,CAAC,GAAG,CAAC,WAAW,CAAC"
             , "map data matches");
 
-        //console.log("\n\n`" + JSON.stringify(fakeFS.writeResults[0].data) + "`");
-
         test.done();
     };
 
+    exports.saveAfterMiddleInsert = (test: nodeunit.Test) => {
+        test.expect(9);
+
+        var fakeFS = new Artifacts.FakeFs();
+        var insertThis = "//This is an inserted trailer!\n//This too!!!!";
+
+        var ir = new InsertRemapper("Banner1.js", "Banner1.js.map", { fs: <any>fakeFS });
+        ir.insert(insertThis,4);
+        ir.save("Banner1.js", "Banner1.js.map", "Banner1.js", "");
+
+        test.strictEqual(fakeFS.writeResults[0].outfile, "Banner1.js", "js output file name is correct");
+
+
+        var bjs1 = Artifacts.Banner1js.split('\n');
+        var expectedOutput = "";
+        for (var i = 0; i < 3; i += 1) {
+            expectedOutput += bjs1[i] + '\n';
+        }
+        expectedOutput += insertThis + '\n';
+        for (var i = 3; i < bjs1.length; i += 1) {
+            expectedOutput += bjs1[i] + ((i+1 === bjs1.length) ? '' : '\n');
+        }
+        
+        test.strictEqual(
+            fakeFS.writeResults[0].data,
+            expectedOutput,
+            "js file content is correct");
+        test.strictEqual(fakeFS.writeResults[0].endoding, "utf8", "js file encoding is correct");
+
+        var actualMapData = JSON.parse(fakeFS.writeResults[1].data);
+        var expectedMapData = JSON.parse(Artifacts.Banner1jsmap);
+
+        test.strictEqual(fakeFS.writeResults[1].outfile, "Banner1.js.map", "js map output file name is correct");
+        test.strictEqual(fakeFS.writeResults[1].endoding, "utf8", "js map file encoding is correct");
+
+        test.strictEqual(actualMapData.version, expectedMapData.version, "map versions match");
+        test.same(actualMapData.sources, expectedMapData.sources, "map sources match");
+        test.same(actualMapData.names, expectedMapData.names, "map names match");
+        test.strictEqual(actualMapData.mappings,
+            "AAAA,UAAU;AACV,IAAI,CAAC,GAAG,CAAC;;;;AAET,CAAC,GAAG,CAAC,GAAG,CAAC;;AAET,OAAO,CAAC,GAAG,CAAC,MAAM,GAAG,CAAC,CAAC;;AAEvB,OAAO,CAAC,GAAG,CAAC,WAAW,CAAC"
+            , "map data matches");
+
+        test.done();
+    };
 
     //todo: work with CRLF instead of just LF
     //todo: what if someone inserts after the final line?

@@ -100,7 +100,8 @@ class InsertRemapper {
     public insert(codeToInsert: string, oneBasedGeneratedLineNumber: number) {
         var linesToInsert = this.toStringArrayOnNewline(codeToInsert);
         this.generatedJSFileContents = this.insertArrayAt(
-            this.generatedJSFileContents,oneBasedGeneratedLineNumber -1, linesToInsert);
+            this.generatedJSFileContents, oneBasedGeneratedLineNumber - 1, linesToInsert
+            );
         
         var insertedLineCount = linesToInsert.length;
         var fileMappingsCount = this.generatedJSFileMappings.length
