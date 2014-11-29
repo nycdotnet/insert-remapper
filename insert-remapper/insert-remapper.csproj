@@ -20,11 +20,13 @@
   <ItemGroup>
     <Content Include="Artifacts\Banner1.js" />
     <Content Include="gruntfile.js" />
+    <Content Include="integration\test.html" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Artifacts\Banner1.ts" />
     <TypeScriptCompile Include="index.ts" />
+    <TypeScriptCompile Include="integration\integrationTests.ts" />
     <TypeScriptCompile Include="tests\index-nodeunit-tests.ts" />
   </ItemGroup>
   <ItemGroup>

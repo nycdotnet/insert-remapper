@@ -11,7 +11,7 @@
                 compiler: './node_modules/grunt-ts/customcompiler/tsc'
             },
             dev: {
-                src: ["*.ts","tests/**/*.ts"]
+                src: ["*.ts","tests/**/*.ts","integration/**/*.ts"]
             }
         },
         nodeunit: {
@@ -22,5 +22,6 @@
     grunt.loadNpmTasks("grunt-ts");
     grunt.loadNpmTasks('grunt-contrib-nodeunit');
     grunt.registerTask("default", ["ts", "nodeunit"]);
+
 };
 
